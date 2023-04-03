@@ -9,6 +9,6 @@ namespace FINAL.Models
         public string Img { get; set; }
         public int views { get; set; }
         public int Kept { get; set; }
-        public Account creator { get; set; }
+        public Profile creator { get; set; }
     }
 }
