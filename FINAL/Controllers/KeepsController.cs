@@ -35,7 +35,7 @@ namespace FINAL.Controllers
             {
                 Account useriInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
 
-              Keep keep = _keepsService.getKeepById(id, useriInfo.Id);
+              Keep keep = _keepsService.getKeepById(id, useriInfo?.Id);
               return Ok(keep);
             }
             catch (Exception e)
@@ -52,7 +52,7 @@ namespace FINAL.Controllers
             {
               Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
               keepData.CreatorId = userInfo.Id;
-              Keep keep = _keepsService.createKeep(keepData);
+              Keep keep = _keepsService.createKeep(keepData, userInfo);
               return Ok(keep);
             }
             catch (Exception e)

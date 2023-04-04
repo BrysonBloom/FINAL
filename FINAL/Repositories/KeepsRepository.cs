@@ -31,7 +31,7 @@ namespace FINAL.Repositories
             string sql = @"select * from keeps join accounts creator on keeps.creatorId = creator.id where keeps.id = @id";
             Keep keep = _db.Query<Keep, Profile, Keep>(sql, (keep, creator)=> 
             {
-                keep.creator = creator;
+                keep.Creator = creator;
                 return keep;
             }, new {id}).FirstOrDefault();
             return keep;
@@ -42,7 +42,7 @@ namespace FINAL.Repositories
             string sql = @"SELECT * FROM keeps join accounts creator on keeps.creatorId = creator.id";
             List<Keep> keeps = _db.Query<Keep, Profile, Keep>(sql, (keeps, creator) => 
             {
-                keeps.creator = creator;
+                keeps.Creator = creator;
                 return keeps;
             }).ToList();
             return keeps;

@@ -1,32 +1,97 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
 namespace FINAL.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class VaultsController : Controller
     {
-        private readonly ILogger<VaultsController> _logger;
+        private readonly VaultsService _VaultsService;
+        private readonly Auth0Provider _auth;
 
-        public VaultsController(ILogger<VaultsController> logger)
+        public VaultsController(VaultsService vaultsService, Auth0Provider auth)
         {
-            _logger = logger;
+            _VaultsService = vaultsService;
+            _auth = auth;
         }
 
-        public IActionResult Index()
-        {
-            return View();
+        [HttpGet]
+        public ActionResult<List<Vault>> getVaults(){
+            try 
+            {
+                List<Vault> vaults = _VaultsService.getVaults();
+                return Ok(vaults);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Vault>> createVault([FromBody] Vault vaultData)
         {
-            return View("Error!");
+            try 
+            {
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                vaultData.CreatorId = userInfo.Id;
+                Vault vault = _VaultsService.createVault(vaultData, userInfo);
+                return Ok(vault);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Vault>> getVaultsById(int id)
+        {
+            try 
+            {
+                Account useriInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+
+              Vault vault = _VaultsService.getVaultById(id, useriInfo?.Id);
+              return Ok(vault);
+            }
+            catch (Exception e)
+            {
+              return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<ActionResult<Vault>> editVault([FromBody] Vault updateData, int id)
+        {
+            try 
+            {
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                updateData.CreatorId = userInfo.Id;
+                updateData.Id = id;
+                Vault vault = _VaultsService.updateVault(id, updateData);
+                return Ok(vault);
+            }
+            catch (Exception e)
+            {
+              return BadRequest(e.Message);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        [Authorize]
+
+        public async Task<ActionResult<Vault>> DeleteVault(int id)
+        {
+            try 
+            {
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                Vault Vault = _VaultsService.deleteVault(id, userInfo.Id);
+                return Ok(Vault);
+            }
+            catch (Exception e)
+            {
+              return BadRequest(e.Message);
+            }
         }
     }
 }

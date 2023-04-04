@@ -10,9 +10,10 @@ namespace FINAL.Services
             _repo = repo;
         }
 
-        internal Keep createKeep(Keep keepData)
+        internal Keep createKeep(Keep keepData, Profile userData)
         {
             Keep keep = _repo.createKeep(keepData);
+            keep.Creator = userData;
             return keep;
         }
 
@@ -31,7 +32,7 @@ namespace FINAL.Services
             if (keep == null) throw new Exception("no keep exists with id " + id);
             if (keep.CreatorId != userId)
             {
-                keep.views++;
+                keep.Views++;
                 _repo.updateKeep(keep);
             }
             return keep;
@@ -48,8 +49,10 @@ namespace FINAL.Services
             Keep keep = _repo.getKeepById(id);
             if (keep != null && keep.CreatorId == updateData.CreatorId)
             {
-                keep.Name = updateData.Name == null ? updateData.Name : keep.Name;
-                keep.Description = updateData.Description == null ? updateData.Description : keep.Description;
+                if (updateData.Name != null)keep.Name = updateData.Name;
+                if (updateData.Description != null)keep.Description = updateData.Description;
+                // keep.Name = updateData.Name == null ? updateData.Name : keep.Name;
+                // keep.Description = updateData.Description == null ? updateData.Description : keep.Description;
                 _repo.updateKeep(keep);
             }else {
                 throw new InvalidOperationException("Could not update keep " + id);
