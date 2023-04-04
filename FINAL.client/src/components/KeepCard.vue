@@ -1,5 +1,5 @@
 <template>
-    <button type="button" class="card" data-bs-toggle="modal" data-bs-target="#KeepModal" @click="getKeepById(keep.id)">
+    <button class="card" @click="getKeepById(keep.id)">
         <img class="img-fluid" :src="keep.img" alt="">
         <div class="card-body text-center">
             {{ keep.name }}
@@ -13,6 +13,7 @@
 import { Keep } from '../models/Keep';
 import { keepsService } from '../services/KeepsService';
 import Pop from '../utils/Pop';
+import KeepModal from './KeepModal.vue';
 
 export default {
     props: {
@@ -33,7 +34,8 @@ export default {
                 }
             }
         }
-    }
+    },
+    components: { KeepModal }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="KeepModal">
-        <div class="modal" tabindex="-1" id="KeepModal">
+        <div class="modal" tabindex="-1" id="keepModal">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -10,9 +10,9 @@
                     <div class="modal-body" v-if="keep.id">
                         <div class="row">
                             <div class="col-6">
-                                <img :src="keep.img" alt="">
+                                <img class="img-fluid" :src="keep.img" alt="">
                             </div>
-                            <col-6>
+                            <div class="col-6">
                                 <div class="row">
                                     <div class="col-12"><i class="mdi mdi-eye">{{ keep.views }}</i></div>
                                 </div>
@@ -22,7 +22,7 @@
                                         <p>{{ keep.description }}</p>
                                     </div>
                                 </div>
-                            </col-6>
+                            </div>
                         </div>
 
                     </div>

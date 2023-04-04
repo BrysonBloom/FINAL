@@ -1,9 +1,10 @@
 <template>
   <div class="container" v-if="keeps[0]">
-    <div class=" row bricks" v-for="k in keeps">
+    <button class=" row bricks" data-bs-toggle="modal" type="button" data-bs-target="#keepModal" v-for="k in keeps">
       <KeepCard :keep="k" />
-    </div>
+    </button>
   </div>
+  <KeepModal />
 </template>
 
 <script>
@@ -12,6 +13,7 @@ import { keepsService } from '../services/KeepsService.js';
 import { computed, onMounted } from 'vue';
 import { AppState } from '../AppState';
 import KeepCard from '../components/KeepCard.vue';
+import KeepModal from '../components/KeepModal.vue';
 
 
 export default {
@@ -31,7 +33,7 @@ export default {
       keeps: computed(() => AppState.keeps)
     };
   },
-  components: { KeepCard }
+  components: { KeepCard, KeepModal }
 }
 </script>
 
