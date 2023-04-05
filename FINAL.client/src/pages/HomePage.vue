@@ -1,8 +1,8 @@
 <template>
-  <div class="container" v-if="keeps[0]">
-    <button class=" row bricks" data-bs-toggle="modal" type="button" data-bs-target="#keepModal" v-for="k in keeps">
+  <div class="grid js-masonry" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }' v-if="keeps[0]">
+    <div class="grid-item" data-bs-toggle="modal" type="button" data-bs-target="#keepModal" v-for="k in keeps">
       <KeepCard :keep="k" />
-    </button>
+    </div>
   </div>
   <KeepModal />
 </template>
@@ -51,5 +51,9 @@ $gap: .5em;
     margin-top: $gap;
     display: inline-block;
   }
+}
+
+.grid-item {
+  width: 200px;
 }
 </style>
