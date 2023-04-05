@@ -1,11 +1,12 @@
 <template>
     <div class="KeepModal">
         <div class="modal" tabindex="-1" id="keepModal">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
 
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            @click="keep = {}"></button>
                     </div>
                     <div class="modal-body" v-if="keep.id">
                         <div class="row">
@@ -57,4 +58,8 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.modal-dialog {
+    width: 80vw;
+}
+</style>

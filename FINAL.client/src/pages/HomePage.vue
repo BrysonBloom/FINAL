@@ -1,7 +1,9 @@
 <template>
-  <div class="grid js-masonry" data-masonry='{ "itemSelector": ".grid-item", "columnWidth": 200 }' v-if="keeps[0]">
-    <div class="grid-item" data-bs-toggle="modal" type="button" data-bs-target="#keepModal" v-for="k in keeps">
-      <KeepCard :keep="k" />
+  <div class=" container-fluid" v-if="keeps[0]">
+    <div class="grid">
+      <div data-bs-toggle="modal" type="button" data-bs-target="#keepModal" v-for="k in keeps">
+        <KeepCard :keep="k" />
+      </div>
     </div>
   </div>
   <KeepModal />
@@ -40,20 +42,29 @@ export default {
 <style scoped lang="scss">
 $gap: .5em;
 
-.bricks {
-  display: flex;
+.grid {
+  // display: grid;
+  // grid-gap: 10px;
+  // grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  // grid-auto-rows: 20px;
+  // height: auto;
 
-  flex-flow: column wrap;
-  max-height: 1000px;
-  width: 25%;
+  // display: flex;
+  // flex-flow: column wrap;
+  // max-height: 1000px;
+  // width: 25%;
+
+  columns: 300px;
+  column-gap: $gap;
 
   &>div {
     margin-top: $gap;
+    margin-left: $gap;
     display: inline-block;
   }
 }
 
-.grid-item {
-  width: 200px;
-}
+// .grid-item {
+//   width: 200px;
+// }
 </style>
