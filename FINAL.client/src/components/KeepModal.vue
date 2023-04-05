@@ -1,32 +1,33 @@
 <template>
     <div class="KeepModal">
         <div class="modal" tabindex="-1" id="keepModal">
-            <div class="modal-dialog modal-xl modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            @click="keep = {}"></button>
-                    </div>
-                    <div class="modal-body" v-if="keep.id">
-                        <div class="row">
-                            <div class="col-6">
-                                <img class="img-fluid" :src="keep.img" alt="">
+            <div class="modal-dialog modal-xl modal-fullscreen-md-down modal-dialog-centered">
+                <div class="modal-content" v-if="keep.id && !mobile">
+                    <div class="row justify-content-between d-flex">
+                        <div class="col-6">
+                            <img class="img-fluid rounded-start" :src="keep.img" alt="">
+                        </div>
+                        <div class="col-6 ">
+                            <div class="row ">
+                                <div class="col-12"><i class="mdi mdi-eye">{{ keep.views }}</i></div>
                             </div>
-                            <div class="col-6">
-                                <div class="row">
-                                    <div class="col-12"><i class="mdi mdi-eye">{{ keep.views }}</i></div>
+                            <div class="row align-items-center h-85">
+                                <div class="col-10 m-auto ">
+                                    <h1 class="text-center">{{ keep.name }}</h1>
+                                    <p>{{ keep.description }}</p>
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h1>{{ keep.name }}</h1>
-                                        <p>{{ keep.description }}</p>
-                                    </div>
-                                </div>
+                            </div>
+                            <div class="row">
+                                <form @submit="">
+                                    <select class="border-bottom w-25" aria-label="add to vault">
+                                        <option selected>Choose vault</option>
+                                        <option v-for="v in vaults" :value="v.id">{{ v.name }}</option>
+                                    </select>
+                                </form>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
         </div>
@@ -51,7 +52,8 @@ export default {
     setup() {
         return {
             account: computed(() => AppState.account),
-            keep: computed(() => AppState.keep)
+            keep: computed(() => AppState.keep),
+            mobile: computed(() => AppState.isMobile)
         }
     }
 }
@@ -59,7 +61,11 @@ export default {
 
 
 <style lang="scss" scoped>
-.modal-dialog {
-    width: 80vw;
+select {
+    border-top: 0px;
+}
+
+.h-85 {
+    height: 90%;
 }
 </style>

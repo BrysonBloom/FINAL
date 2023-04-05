@@ -18,6 +18,14 @@ import KeepModal from './components/KeepModal.vue'
 
 export default {
   setup() {
+
+    // let minWidth = window.matchMedia("(max-width: 415px)")
+    // while (minWidth.matches) {
+    //   AppState.isMobile = true
+    // }
+    // while (!minWidth.matches) {
+    //   AppState.isMobile = false
+    // }
     return {
       appState: computed(() => AppState)
     }

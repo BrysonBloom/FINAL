@@ -1,11 +1,12 @@
 <template>
-    <button class="card" @click="getKeepById(keep.id)">
-        <img class="img-fluid" :src="keep.img" alt="">
-        <div class="card-body text-center">
+    <div class="card" @click="getKeepById(keep.id)" style="background-position: center; background-size: cover;"
+        :style="{ backgroundImage: `url(${keep.img})` }">
+        <img class="img-fluid rounded" :src="keep.img" alt="">
+        <div class="card-body shadow text-light fw- text-center">
             {{ keep.name }}
         </div>
 
-    </button>
+    </div>
 </template>
 
 
@@ -40,4 +41,8 @@ export default {
 </script>
 
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.shadow {
+    text-shadow: 1px .5px 2px black;
+}
+</style>
