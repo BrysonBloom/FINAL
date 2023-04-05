@@ -9,9 +9,17 @@ namespace FINAL.Services
             _repo = repo;
         }
 
-        internal List<Vault> getVaults()
+        internal List<Vault> getVaults(string id)
         {
             List<Vault> vaults = _repo.getVaults();
+            
+                foreach(Vault vault in vaults)
+                {
+                    if (vault.CreatorId != id){
+                        if (vault.IsPrivate == true) vaults.Remove(vault);
+                    }
+                }
+            
             return vaults;
         }
 
@@ -25,7 +33,8 @@ namespace FINAL.Services
         internal Vault getVaultById(int id, string userId)
         {
             Vault vault = _repo.getVaultById(id);
-            if (vault == null) throw new Exception("no keep exists with id " + id);
+            if (vault == null) throw new Exception("no vault exists with id " + id);
+            if (vault.CreatorId != userId && vault.IsPrivate == true) throw new Exception("no vault exists with id " + id);
             return vault;
         }
 
@@ -52,6 +61,19 @@ namespace FINAL.Services
                 _repo.deleteVault(id);
             }else throw new Exception("Vault not deleted with id " + id);
             return Vault;
+        }
+
+        internal List<Vault> getProfileVaults(string id, string userId)
+        {
+            List<Vault> vaults = _repo.getProfileVaults(id);
+            if (id != userId){
+                foreach(Vault vault in vaults)
+                {
+                    if (vault.IsPrivate == true) vaults.Remove(vault);
+                }
+            }
+            return vaults;
+
         }
     }
 }

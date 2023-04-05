@@ -48,6 +48,17 @@ namespace FINAL.Repositories
             return keeps;
         }
 
+        internal List<Keep> getProfileKeeps(string id)
+        {
+            string sql = "SELECT * FROM keeps join accounts creator on keeps.creatorId = creator.id WHERE creatorId = @id";
+            List<Keep> keeps = _db.Query<Keep, Profile, Keep>(sql, (keeps, creator) => 
+            {
+                keeps.Creator = creator;
+                return keeps;
+            }, new {id}).ToList();
+            return keeps;
+        }
+
         internal void updateKeep(Keep keep)
         {
             string sql = @"UPDATE keeps SET 

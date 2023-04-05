@@ -57,5 +57,16 @@ namespace FINAL.Repositories
             string sql = @"delete from vaults where id = @id";
             _db.Execute(sql, new { id} );
         }
+
+        internal List<Vault> getProfileVaults(string id)
+        {
+            string sql = "SELECT * FROM vaults join accounts creator on vaults.creatorId = creator.id WHERE creatorId = @id";
+            List<Vault> Vaults = _db.Query<Vault, Profile, Vault>(sql, (Vaults, creator) => 
+            {
+                Vaults.Creator = creator;
+                return Vaults;
+            }, new {id}).ToList();
+            return Vaults;
+        }
     }
 }

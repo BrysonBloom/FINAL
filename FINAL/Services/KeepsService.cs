@@ -44,6 +44,12 @@ namespace FINAL.Services
             return keeps;
         }
 
+        internal List<Keep> getProfileKeeps(string id)
+        {
+            List<Keep> keeps = _repo.getProfileKeeps(id);
+            return keeps;
+        }
+
         internal Keep updateKeep(int id, Keep updateData)
         {
             Keep keep = _repo.getKeepById(id);

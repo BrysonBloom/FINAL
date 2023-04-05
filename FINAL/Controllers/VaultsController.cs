@@ -13,10 +13,11 @@ namespace FINAL.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Vault>> getVaults(){
+        public async Task<ActionResult<List<Vault>>> getVaults(){
             try 
             {
-                List<Vault> vaults = _VaultsService.getVaults();
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                List<Vault> vaults = _VaultsService.getVaults(userInfo.Id);
                 return Ok(vaults);
             }
             catch (Exception e)
