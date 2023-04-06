@@ -18,11 +18,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <form @submit="">
-                                    <select class="border-bottom w-25" aria-label="add to vault">
+
+                                <form @submit.prevent @submit="">
+                                    <select class="border select w-25" aria-label="add to vault">
                                         <option selected>Choose vault</option>
                                         <option v-for="v in vaults" :value="v.id">{{ v.name }}</option>
                                     </select>
+                                    <button class="btn btn-primary">Add</button>
                                 </form>
                             </div>
                         </div>
@@ -61,8 +63,8 @@ export default {
 
 
 <style lang="scss" scoped>
-select {
-    border-top: 0px;
+.select {
+    border-bottom: 3px solid black;
 }
 
 .h-85 {

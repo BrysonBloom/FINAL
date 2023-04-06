@@ -11,15 +11,24 @@
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
 import KeepModal from './components/KeepModal.vue'
+import { logger } from './utils/Logger'
 
 export default {
   setup() {
 
-    // let minWidth = window.matchMedia("(max-width: 415px)")
+    let minWidth = window.matchMedia("(max-width: 415px)")
+    onMounted(() => {
+      if (minWidth.matches) {
+        AppState.isMobile = true
+        logger.log(AppState.isMobile)
+      }
+    })
+
+
     // while (minWidth.matches) {
     //   AppState.isMobile = true
     // }

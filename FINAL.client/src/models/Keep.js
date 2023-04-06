@@ -1,3 +1,5 @@
+import { Account } from "./Account";
+
 export class Keep {
     constructor(data) {
         this.id = data.id;
@@ -6,6 +8,6 @@ export class Keep {
         this.description = data.description;
         this.img = data.img;
         this.views = data.views;
-        this.creator = data.creator;
+        this.creator = new Account(data.creator);
     }
 }
