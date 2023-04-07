@@ -11,6 +11,8 @@
                 <img v-if="!route.params.profileId && route.name != 'Account'" class="rounded-circle" style="height: 40px;"
                     :src="keep.creator.picture" alt="">
                 <button v-if="route.name == 'Account'" @click="deleteKeep(keep.id)">DELETE</button>
+                <button v-if="user.id == vault.creatorId && vault.id == route.params.vaultId"
+                    @click="removeKeepFromVault(keep.vaultKeepId)">Remove</button>
             </div>
 
         </div>
@@ -25,6 +27,9 @@ import { Keep } from '../models/Keep';
 import { keepsService } from '../services/KeepsService';
 import Pop from '../utils/Pop';
 import KeepModal from './KeepModal.vue';
+import { AppState } from '../AppState';
+import { computed } from 'vue';
+import { vaultsService } from '../services/VaultsService';
 
 export default {
     props: {
@@ -37,6 +42,8 @@ export default {
 
         let route = useRoute()
         return {
+            vault: computed(() => AppState.vault),
+            user: computed(() => AppState.account),
             route,
             async getKeepById(id) {
                 try {
@@ -46,7 +53,18 @@ export default {
                 }
             },
             async deleteKeep(id) {
-                await keepsService.deleteKeep(id);
+                try {
+                    await keepsService.deleteKeep(id);
+                } catch (error) {
+                    Pop.error(error)
+                }
+            },
+            async removeKeepFromVault(vaultKeepId) {
+                try {
+                    await vaultsService.removeKeepFromVault(vaultKeepId);
+                } catch (error) {
+                    Pop.error(error)
+                }
             }
         }
     },

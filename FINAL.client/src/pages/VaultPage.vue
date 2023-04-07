@@ -21,6 +21,7 @@ import { vaultsService } from '../services/VaultsService'
 import { onMounted, computed } from 'vue';
 import Pop from '../utils/Pop';
 import { AppState } from '../AppState';
+import { router } from '../router';
 export default {
     setup() {
         const route = useRoute()
@@ -30,7 +31,8 @@ export default {
                 const vaultId = route.params.vaultId
                 await vaultsService.getKeepsInVault(vaultId)
             } catch (error) {
-                Pop.error(error)
+                router.push("/")
+                Pop.error('404 Vault not found')
             }
         }
         onMounted(() => {
