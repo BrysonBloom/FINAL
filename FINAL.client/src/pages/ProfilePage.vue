@@ -1,5 +1,15 @@
 <template>
     <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <img class="img-fluid" :src="profile.coverImg" alt="">
+
+            </div>
+            <div class="col-6 m-auto">
+                <p class="fs-2 fw-bold">{{ profile.name }} keeps: {{ keeps.length }} vaults: {{ vaults.length }}</p>
+                <img class="img-fluid" :src="profile.picture" alt="">
+            </div>
+        </div>
 
         <div class="row" v-if="vaults[0]">
             <div class="col-4" v-for="v in vaults">
@@ -31,6 +41,7 @@ export default {
         onMounted(() => {
             getVaultsByProfile()
             getKeepsByProfile()
+            getProfile()
         })
         async function getVaultsByProfile() {
             try {
@@ -39,6 +50,10 @@ export default {
             } catch (error) {
                 Pop.error(error)
             }
+        }
+        async function getProfile() {
+            const profileId = route.params.profileId
+            await vaultsService.getProfile(profileId)
         }
         async function getKeepsByProfile() {
             try {
@@ -50,7 +65,8 @@ export default {
         }
         return {
             keeps: computed(() => AppState.keeps),
-            vaults: computed(() => AppState.vaults)
+            vaults: computed(() => AppState.vaults),
+            profile: computed(() => AppState.profile)
         }
     }
 }

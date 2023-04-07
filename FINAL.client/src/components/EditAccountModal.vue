@@ -1,6 +1,6 @@
 <template>
     <div class="EditAccountModal">
-        <div class="modal" tabindex="-1" id="EditAccountModal">
+        <div class="modal" tabindex="-1" id="editAccountModal">
             <div class="modal-dialog modal-xl modal-fullscreen-md-down modal-dialog-centered">
                 <div class="modal-content" v-if="!mobile">
                     <div>
@@ -12,15 +12,15 @@
                             </div>
 
                             <div class="mb-2">
-                                <label class="form-label">description</label>
-                                <input v-model="editable.description" minlength="3" maxlength="500"
-                                    placeholder="Keep Description (Optional)" type="text" class="form-control">
+                                <label class="form-label">Image</label>
+                                <input v-model="editable.picture" minlength="3" maxlength="500" placeholder="Profile Img"
+                                    type="text" class="form-control">
                             </div>
 
                             <div class="mb-2">
-                                <label class="form-label">Image URL</label>
-                                <input required v-model="editable.img" minlength="3" maxlength="500" placeholder="Image URL"
-                                    type="text" class="form-control">
+                                <label class="form-label">Cover Image</label>
+                                <input required v-model="editable.coverImg" minlength="3" maxlength="500"
+                                    placeholder="Image URL" type="text" class="form-control">
                             </div>
 
                             <button data-bs-dismiss="modal" class="btn btn-success" type="submit">Create Keep</button>
@@ -41,6 +41,7 @@ import { AppState } from "../AppState.js";
 import { keepsService } from '../services/KeepsService.js';
 import { logger } from '../utils/Logger.js';
 import Pop from '../utils/Pop.js';
+import { accountService } from '../services/AccountService.js';
 
 export default {
     setup() {
@@ -49,10 +50,10 @@ export default {
         return {
             editable,
 
-            async newKeep() {
+            async EditAccount() {
                 try {
                     const formData = editable.value;
-                    await keepsService.EditAccount(formData);
+                    await accountService.editAccount(formData);
                 }
                 catch (error) {
                     Pop.error(error.message);

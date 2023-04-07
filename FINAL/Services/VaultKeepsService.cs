@@ -45,7 +45,7 @@ namespace FINAL.Services
             return vaultKeeps;
 
         }
-        internal List<KeepWithVaultKeepId> getKeepsInVault(int id)
+        internal List<KeepWithVaultKeepId> getKeepsInVault(int id, string userId)
         {
             List<VaultKeep> vaultKeeps = this.getVaultKeepsById(id);
 
@@ -63,7 +63,7 @@ namespace FINAL.Services
                 ownerId = "";
 
             }
-            Vault vault = _vaultsService.getVaultById(id, ownerId);
+            Vault vault = _vaultsService.getVaultById(id, userId);
             return keeps;
             // }
 

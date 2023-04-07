@@ -13,6 +13,8 @@ export const AppState = reactive({
   keep: {},
   vault: {},
 
+  profile: {},
+
 
 
   isMobile: false,

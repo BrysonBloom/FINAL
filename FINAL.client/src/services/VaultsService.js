@@ -50,6 +50,11 @@ class VaultsService {
         AppState.keeps = AppState.keeps.filter(k => k.vaultKeepId != vaultKeepId)
     }
 
+    async getProfile(id) {
+        const res = await api.get('api/profiles/' + id)
+        AppState.profile = res.data
+    }
+
 
 }
 

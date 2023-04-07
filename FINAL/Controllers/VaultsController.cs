@@ -99,11 +99,12 @@ namespace FINAL.Controllers
         }
 
         [HttpGet("{id}/keeps")]
-        public ActionResult<List<KeepWithVaultKeepId>> getKeepsInVault(int id)
+        public async Task<ActionResult<List<KeepWithVaultKeepId>>> getKeepsInVault(int id)
         {
             try
             {
-                List<KeepWithVaultKeepId> keeps = _vaultKeepsService.getKeepsInVault(id);
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                List<KeepWithVaultKeepId> keeps = _vaultKeepsService.getKeepsInVault(id, userInfo.Id);
                 return Ok(keeps);
             }
             catch (Exception e)

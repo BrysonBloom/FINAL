@@ -13,26 +13,27 @@
         </div>
         <div class="dropdown-menu dropdown-menu-lg-left p-0" aria-labelledby="authDropdown">
           <div class="list-group">
-            <div>
-              <div class="list-group-item dropdown-item list-group-item-action">
-                Manage Account
-              </div>
+            <div data-bs-toggle="modal" type="button" data-bs-target="#editAccountModal"></div>>
+            <div class="list-group-item dropdown-item list-group-item-action">
+              Manage Account
             </div>
-            <div class="list-group-item dropdown-item list-group-item-action text-danger selectable" @click="logout">
-              <i class="mdi mdi-logout"></i>
-              logout
-            </div>
+          </div>
+          <div class="list-group-item dropdown-item list-group-item-action text-danger selectable" @click="logout">
+            <i class="mdi mdi-logout"></i>
+            logout
           </div>
         </div>
       </div>
     </div>
   </span>
+  <EditAccountModal />
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from '../AppState'
 import { AuthService } from '../services/AuthService'
+import EditAccountModal from './EditAccountModal.vue'
 export default {
   setup() {
     return {
@@ -45,7 +46,8 @@ export default {
         AuthService.logout({ returnTo: window.location.origin })
       }
     }
-  }
+  },
+  components: { EditAccountModal }
 }
 </script>
 
