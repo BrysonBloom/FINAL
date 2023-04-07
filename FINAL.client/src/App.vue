@@ -15,7 +15,10 @@ import { computed, onMounted } from 'vue'
 import { AppState } from './AppState'
 import Navbar from './components/Navbar.vue'
 import KeepModal from './components/KeepModal.vue'
+import CreateKeepModal from './components/CreateKeepModal.vue'
 import { logger } from './utils/Logger'
+import { vaultsService } from './services/VaultsService'
+
 
 export default {
   setup() {
@@ -25,6 +28,9 @@ export default {
       if (minWidth.matches) {
         AppState.isMobile = true
         logger.log(AppState.isMobile)
+      }
+      if (AppState.account) {
+        vaultsService.getMyVaults
       }
     })
 
@@ -39,7 +45,7 @@ export default {
       appState: computed(() => AppState)
     }
   },
-  components: { Navbar, KeepModal }
+  components: { Navbar, KeepModal, CreateKeepModal }
 }
 </script>
 <style lang="scss">

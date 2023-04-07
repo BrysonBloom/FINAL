@@ -4,20 +4,23 @@ namespace FINAL.Controllers
     public class VaultsController : Controller
     {
         private readonly VaultsService _VaultsService;
+        private readonly VaultKeepsService _vaultKeepsService;
         private readonly Auth0Provider _auth;
 
-        public VaultsController(VaultsService vaultsService, Auth0Provider auth)
+        public VaultsController(VaultsService vaultsService, Auth0Provider auth, VaultKeepsService vaultKeepsService)
         {
             _VaultsService = vaultsService;
             _auth = auth;
+            _vaultKeepsService = vaultKeepsService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Vault>>> getVaults(){
-            try 
+        public async Task<ActionResult<List<Vault>>> getVaults()
+        {
+            try
             {
                 Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
-                List<Vault> vaults = _VaultsService.getVaults(userInfo.Id);
+                List<Vault> vaults = _VaultsService.getVaults(userInfo?.Id);
                 return Ok(vaults);
             }
             catch (Exception e)
@@ -30,7 +33,7 @@ namespace FINAL.Controllers
         [Authorize]
         public async Task<ActionResult<Vault>> createVault([FromBody] Vault vaultData)
         {
-            try 
+            try
             {
                 Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
                 vaultData.CreatorId = userInfo.Id;
@@ -46,16 +49,16 @@ namespace FINAL.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Vault>> getVaultsById(int id)
         {
-            try 
+            try
             {
-                Account useriInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
 
-              Vault vault = _VaultsService.getVaultById(id, useriInfo?.Id);
-              return Ok(vault);
+                Vault vault = _VaultsService.getVaultById(id, userInfo?.Id);
+                return Ok(vault);
             }
             catch (Exception e)
             {
-              return BadRequest(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
@@ -63,7 +66,7 @@ namespace FINAL.Controllers
         [Authorize]
         public async Task<ActionResult<Vault>> editVault([FromBody] Vault updateData, int id)
         {
-            try 
+            try
             {
                 Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
                 updateData.CreatorId = userInfo.Id;
@@ -73,7 +76,7 @@ namespace FINAL.Controllers
             }
             catch (Exception e)
             {
-              return BadRequest(e.Message);
+                return BadRequest(e.Message);
             }
         }
 
@@ -83,7 +86,7 @@ namespace FINAL.Controllers
 
         public async Task<ActionResult<Vault>> DeleteVault(int id)
         {
-            try 
+            try
             {
                 Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
                 Vault Vault = _VaultsService.deleteVault(id, userInfo.Id);
@@ -91,7 +94,21 @@ namespace FINAL.Controllers
             }
             catch (Exception e)
             {
-              return BadRequest(e.Message);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("{id}/keeps")]
+        public ActionResult<List<KeepWithVaultKeepId>> getKeepsInVault(int id)
+        {
+            try
+            {
+                List<KeepWithVaultKeepId> keeps = _vaultKeepsService.getKeepsInVault(id);
+                return Ok(keeps);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
     }

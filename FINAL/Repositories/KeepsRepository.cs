@@ -64,7 +64,8 @@ namespace FINAL.Repositories
             string sql = @"UPDATE keeps SET 
             name = @Name,
             description = @Description, 
-            views = @Views 
+            views = @Views,
+            kept = @Kept
 
             WHERE id = @Id;";
             int rows = _db.Execute(sql, keep);

@@ -1,26 +1,26 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
-        <img alt="logo" src="../assets/img/cw-logo.png" height="45" />
-      </div>
+      <button class="btn btn-primary">
+        HOME
+
+      </button>
     </router-link>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarText"
-      aria-controls="navbarText"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button data-bs-toggle="modal" type="button" data-bs-target="#createKeepModal">
+      create Keep
+    </button>
+    <button data-bs-toggle="modal" type="button" data-bs-target="#createVaultModal">
+      create Vault
+    </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+      aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto">
         <li>
-          <router-link :to="{ name: 'About' }" class="btn text-success lighten-30 selectable text-uppercase">
-            About
+          <router-link :to="{ name: 'Account' }" class="btn text-success lighten-30 selectable text-uppercase">
+            Account
           </router-link>
         </li>
       </ul>
@@ -28,15 +28,19 @@
       <Login />
     </div>
   </nav>
+  <CreateKeepModal />
+  <CreateVaultModal />
 </template>
 
 <script>
 import Login from './Login.vue'
+import CreateKeepModal from './CreateKeepModal.vue';
+import CreateVaultModal from './CreateVaultModal.vue';
 export default {
   setup() {
     return {}
   },
-  components: { Login }
+  components: { Login, CreateKeepModal, CreateVaultModal }
 }
 </script>
 
@@ -60,5 +64,4 @@ a:hover {
     height: 64px;
   }
 }
-
 </style>

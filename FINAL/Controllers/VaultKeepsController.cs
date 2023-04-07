@@ -1,32 +1,47 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
 namespace FINAL.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class VaultKeepsController : Controller
     {
-        private readonly ILogger<VaultKeepsController> _logger;
+        private readonly VaultKeepsService _vaultKeepsService;
+        private readonly Auth0Provider _auth;
 
-        public VaultKeepsController(ILogger<VaultKeepsController> logger)
+        public VaultKeepsController(VaultKeepsService vaultKeepsService, Auth0Provider auth)
         {
-            _logger = logger;
+            _vaultKeepsService = vaultKeepsService;
+            _auth = auth;
         }
-
-        public IActionResult Index()
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<VaultKeep>> createVaultKeep([FromBody] VaultKeep newVaultKeep )
         {
-            return View();
+            try 
+            {
+              Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                newVaultKeep.CreatorId = userInfo.Id;
+                VaultKeep vaultKeep = _vaultKeepsService.createVaultKeep(newVaultKeep); 
+                return Ok(vaultKeep);
+            }
+            catch (Exception e)
+            {
+              return BadRequest(e.Message);
+            }
         }
+        [HttpDelete("{id}")]
+        [Authorize]
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<ActionResult<VaultKeep>> DeleteVault(int id)
         {
-            return View("Error!");
+            try 
+            {
+                Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+                VaultKeep VaultKeep = _vaultKeepsService.deleteVaultKeep(id, userInfo.Id);
+                return Ok(VaultKeep);
+            }
+            catch (Exception e)
+            {
+              return BadRequest(e.Message);
+            }
         }
     }
 }

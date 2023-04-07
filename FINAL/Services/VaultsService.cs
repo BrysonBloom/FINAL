@@ -3,23 +3,30 @@ namespace FINAL.Services
     public class VaultsService
     {
         private readonly VaultsRepository _repo;
+        private readonly KeepsService _keepsService;
 
-        public VaultsService(VaultsRepository repo)
+
+
+        public VaultsService(VaultsRepository repo, KeepsService keepsService)
         {
             _repo = repo;
+            _keepsService = keepsService;
+
+
         }
 
         internal List<Vault> getVaults(string id)
         {
             List<Vault> vaults = _repo.getVaults();
-            
-                foreach(Vault vault in vaults)
+
+            foreach (Vault vault in vaults)
+            {
+                if (vault.CreatorId != id)
                 {
-                    if (vault.CreatorId != id){
-                        if (vault.IsPrivate == true) vaults.Remove(vault);
-                    }
+                    if (vault.IsPrivate == true) vaults.Remove(vault);
                 }
-            
+            }
+
             return vaults;
         }
 
@@ -43,12 +50,14 @@ namespace FINAL.Services
             Vault vault = _repo.getVaultById(id);
             if (vault != null && vault.CreatorId == updateData.CreatorId)
             {
-                if (updateData.Name != null)vault.Name = updateData.Name;
-                if (updateData.Description != null)vault.Description = updateData.Description;
+                if (updateData.Name != null) vault.Name = updateData.Name;
+                if (updateData.Description != null) vault.Description = updateData.Description;
                 // Vault.Name = updateData.Name == null ? updateData.Name : Vault.Name;
                 // Vault.Description = updateData.Description == null ? updateData.Description : Vault.Description;
                 _repo.updateVault(vault);
-            }else {
+            }
+            else
+            {
                 throw new InvalidOperationException("Could not update Vault " + id);
             }
             return vault;
@@ -57,23 +66,37 @@ namespace FINAL.Services
         internal Vault deleteVault(int id, string userId)
         {
             Vault Vault = _repo.getVaultById(id);
-            if (Vault != null && Vault.CreatorId == userId){
+            if (Vault != null && Vault.CreatorId == userId)
+            {
                 _repo.deleteVault(id);
-            }else throw new Exception("Vault not deleted with id " + id);
+            }
+            else throw new Exception("Vault not deleted with id " + id);
             return Vault;
         }
 
         internal List<Vault> getProfileVaults(string id, string userId)
         {
             List<Vault> vaults = _repo.getProfileVaults(id);
-            if (id != userId){
-                foreach(Vault vault in vaults)
-                {
-                    if (vault.IsPrivate == true) vaults.Remove(vault);
-                }
+            if (id != userId)
+            {
+
+                vaults.RemoveAll(v => v.IsPrivate == true);
+                // foreach (Vault vault in vaults)
+                // {
+                //     if (vault.IsPrivate == true) vaults.Remove(vault);
+                // }
             }
             return vaults;
 
         }
+
+        // internal List<KeepWithVaultKeepId> getKeepsInVault(int id)
+        // {
+        //     List<VaultKeep> vaultKeeps = _vaultKeepsService.getVaultKeepsById(id);
+
+        //     List<KeepWithVaultKeepId> keeps = _keepsService.getKeepsInVault(vaultKeeps);
+        //     Vault vault = this.getVaultById(id, vaultKeeps[0].CreatorId);
+        //     return keeps;
+        // }
     }
 }
